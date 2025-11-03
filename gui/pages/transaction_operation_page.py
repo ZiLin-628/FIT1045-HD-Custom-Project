@@ -316,8 +316,8 @@ def view_transactions_view(
             df = pd.DataFrame(transactions_data)
             st.dataframe(df, use_container_width=True, hide_index=True)
 
-            # Export button
-            csv = df.to_csv(index=False).encode("utf-8")
+            # Export button with UTF-8 BOM encoding for proper currency symbol display
+            csv = df.to_csv(index=False).encode("utf-8-sig")
 
             # Generate filename with current filters
             filter_parts = []
