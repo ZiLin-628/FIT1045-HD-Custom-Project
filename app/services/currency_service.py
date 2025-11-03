@@ -1,7 +1,7 @@
 # app/services/currency_service.py
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from decimal import Decimal
 
 import requests
@@ -20,8 +20,6 @@ class CurrencyService:
 
     API_VERSION = "v1"
 
-    # Refresh duration
-    CACHE_DURATION_HOURS = 24
 
     def __init__(self, db_session):
         """
@@ -95,12 +93,13 @@ class CurrencyService:
         Returns:
             Decimal | None: Cached rate or None if expired/not found.
         """
-        cache_expiry = datetime.now() - timedelta(hours=self.CACHE_DURATION_HOURS)
+        # Get start of today (midnight 00:00:00)
+        today_start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 
         rate_record = (
             self.db_session.query(ExchangeRate)
             .filter_by(from_currency=from_currency, to_currency=to_currency)
-            .filter(ExchangeRate.last_updated > cache_expiry)
+            .filter(ExchangeRate.last_updated >= today_start)
             .first()
         )
 
