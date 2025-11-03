@@ -23,7 +23,7 @@ A personal finance management application built with Python and Streamlit help t
 
 **Streamlit-based Web GUI**: Interactive, user-friendly web interface accessible via browser for all operations.
 
-**Multi-Currency System**: Support for multiple currencies with automatic conversion to MYR using Currency API. Exchange rates cached for 1 hours.
+**Multi-Currency System**: Support for multiple currencies with automatic conversion to MYR using Currency API. Exchange rates cached daily and refresh at midnight (00:00).
 
 ### Transaction Management
 
