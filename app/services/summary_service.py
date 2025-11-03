@@ -1,4 +1,4 @@
-# summary_service.py
+# app/services/summary_service.py
 
 from datetime import datetime, timedelta
 from decimal import Decimal
@@ -25,7 +25,7 @@ class SummaryService:
             category_service: Service managing categories.
             currency_service: Service managing currency conversions.
         """
-        
+
         self.db_session = db_session
         self.account_service = account_service
         self.category_service = category_service
@@ -48,7 +48,7 @@ class SummaryService:
         Returns:
             list[Transaction]: Transactions matching the criteria.
         """
-        
+
         query = self.db_session.query(Transaction).filter(
             Transaction.datetime >= start, Transaction.datetime <= end
         )

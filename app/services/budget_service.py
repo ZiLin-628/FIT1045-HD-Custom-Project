@@ -1,4 +1,5 @@
-"""Service for managing category budgets."""
+# app/services/budget_service.py
+
 
 import calendar
 from datetime import datetime, timedelta
@@ -66,7 +67,9 @@ class BudgetService:
 
         # Only allow expense category
         if transaction_type != TransactionType.EXPENSE:
-            raise InvalidInputError("Budgets are only available for expense categories.")
+            raise InvalidInputError(
+                "Budgets are only available for expense categories."
+            )
 
         # Validate if category exist
         category = self.category_service.get_category_by_name_and_type(
@@ -183,7 +186,6 @@ class BudgetService:
         new_period: str = None,
         new_start_date: datetime = None,
     ) -> Budget:
-        
         """
         Edit an existing budget.
 
@@ -201,7 +203,7 @@ class BudgetService:
             InvalidInputError: If transaction_type or period is invalid.
             NotFoundError: If category or budget does not exist.
         """
-        
+
         # Validate inputs
         category_name = validate_non_empty_string(category_name, "Category name")
         transaction_type = validate_transaction_type(transaction_type_input)
@@ -234,7 +236,7 @@ class BudgetService:
 
         if new_period is not None and new_period.strip():
             budget.period = validate_budget_period(new_period)
-              
+
         if new_start_date is not None:
             # Future start dates are now allowed for planning purposes
             budget.start_date = new_start_date
@@ -262,7 +264,7 @@ class BudgetService:
             InvalidInputError: If transaction_type is invalid.
             NotFoundError: If category or budget does not exist.
         """
-        
+
         # Validate inputs
         category_name = validate_non_empty_string(category_name, "Category name")
         transaction_type = validate_transaction_type(transaction_type_input)
@@ -322,7 +324,7 @@ class BudgetService:
             InvalidInputError: If transaction_type is not "expense".
             NotFoundError: If category or budget is not found.
         """
-        
+
         # Validate transaction type
         transaction_type = validate_transaction_type(transaction_type_input)
 
@@ -381,44 +383,44 @@ class BudgetService:
         Returns:
             tuple[datetime, datetime]: Tuple containing (period_start, period_end).
         """
-        
+
         now = get_current_time()
         start = budget.start_date
 
         # If budget hasn't started yet, return the first period
         if now < start:
-            
+
             if budget.period == BudgetPeriod.WEEKLY:
                 return start, start + timedelta(weeks=1)
-            
+
             elif budget.period == BudgetPeriod.MONTHLY:
                 # Calculate next month
                 if start.month == 12:
                     next_year, next_month = start.year + 1, 1
                 else:
                     next_year, next_month = start.year, start.month + 1
-                    
+
                 max_day_in_next = calendar.monthrange(next_year, next_month)[1]
                 safe_day_next = min(start.day, max_day_in_next)
                 period_end = start.replace(
                     year=next_year, month=next_month, day=safe_day_next
                 )
-                
+
                 return start, period_end
-            
+
             elif budget.period == BudgetPeriod.YEARLY:
                 end_year = start.year + 1
-                
+
                 if (
                     start.month == 2
                     and start.day == 29
                     and not calendar.isleap(end_year)
                 ):
                     period_end = start.replace(year=end_year, day=28)
-                    
+
                 else:
                     period_end = start.replace(year=end_year)
-                    
+
                 return start, period_end
 
         # Find the current period
@@ -431,7 +433,7 @@ class BudgetService:
         elif budget.period == BudgetPeriod.MONTHLY:
             # Calculate months difference
             months_diff = (now.year - start.year) * 12 + (now.month - start.month)
-            
+
             # If we haven't reached the day of the month yet, we're still in the previous period
             if now.day < start.day:
                 months_diff -= 1
@@ -487,7 +489,7 @@ class BudgetService:
         self, category_id: int, period_start: datetime, period_end: datetime
     ) -> Decimal:
         """Calculate total spent in MYR for category in given period."""
-        
+
         transactions = (
             self.db_session.query(Transaction)
             .filter(
@@ -510,7 +512,7 @@ class BudgetService:
 
         Note: Only returns expense category budgets since income budgets are not supported.
         """
-        
+
         budgets = self.get_all_budgets()
         statuses = []
 

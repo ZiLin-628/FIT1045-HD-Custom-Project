@@ -1,4 +1,5 @@
-"""Service for managing currency conversion and exchange rates."""
+# app/services/currency_service.py
+
 
 from datetime import datetime, timedelta
 from decimal import Decimal
@@ -75,7 +76,12 @@ class CurrencyService:
 
         # Fetch from API and cache
         return self._fetch_and_cache_rate(
-            from_currency, to_currency, from_currency.lower(), to_currency.lower(), date, minified
+            from_currency,
+            to_currency,
+            from_currency.lower(),
+            to_currency.lower(),
+            date,
+            minified,
         )
 
     def _get_cached_rate(self, from_currency: str, to_currency: str) -> Decimal | None:
@@ -134,8 +140,12 @@ class CurrencyService:
         endpoint += ".min.json" if minified else ".json"
 
         urls = [
-            self.CDN_URL.format(date=date, api_version=self.API_VERSION, endpoint=endpoint),
-            self.FALLBACK_URL.format(date=date, api_version=self.API_VERSION, endpoint=endpoint),
+            self.CDN_URL.format(
+                date=date, api_version=self.API_VERSION, endpoint=endpoint
+            ),
+            self.FALLBACK_URL.format(
+                date=date, api_version=self.API_VERSION, endpoint=endpoint
+            ),
         ]
 
         last_exception = None

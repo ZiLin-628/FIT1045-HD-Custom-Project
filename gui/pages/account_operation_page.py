@@ -1,3 +1,5 @@
+# gui/pages/account_operation_page.py
+
 import pandas as pd
 import streamlit as st
 
@@ -123,7 +125,7 @@ def add_account_view(account_service: AccountService):
                 step=0.01,
                 format="%.2f",
                 help="Enter the starting balance (will be converted to MYR)",
-                key="initial_balance_input"
+                key="initial_balance_input",
             )
 
         # Submit button

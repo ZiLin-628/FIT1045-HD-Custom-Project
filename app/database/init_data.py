@@ -1,4 +1,4 @@
-# init_data.py
+# app/database/init_data.py
 
 from sqlalchemy.orm import Session
 

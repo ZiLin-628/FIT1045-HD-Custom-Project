@@ -1,4 +1,4 @@
-# transaction_service.py
+# app/services/transaction_service.py
 
 from datetime import datetime
 
@@ -119,7 +119,9 @@ class TransactionService:
         timestamp = custom_datetime if custom_datetime else get_current_time()
 
         # Verify category and account exist
-        category = self.category_service.get_category_by_name_and_type(category_name, transaction_type)
+        category = self.category_service.get_category_by_name_and_type(
+            category_name, transaction_type
+        )
         if not category:
             raise NotFoundError(
                 f"Category '{category_name}' not found for {transaction_type.value} transactions."
@@ -134,7 +136,7 @@ class TransactionService:
         if currency == "MYR":
             exchange_rate = 1.0
             amount_in_myr = amount_decimal
-            
+
         else:
             # Get the current exchange rate from currency service
             exchange_rate = self.currency_service.get_exchange_rate(currency)
@@ -149,8 +151,8 @@ class TransactionService:
             account=account,
             amount=amount_decimal,
             currency=currency,
-            amount_in_myr=amount_in_myr, 
-            exchange_rate=exchange_rate,  
+            amount_in_myr=amount_in_myr,
+            exchange_rate=exchange_rate,
             description=description,
         )
 
@@ -201,7 +203,6 @@ class TransactionService:
             NotFoundError: If transaction, account, or category does not exist.
         """
 
-
         # Check if transaction exist
         transaction = self.get_transaction(transaction_id)
         if not transaction:
@@ -242,7 +243,6 @@ class TransactionService:
         new_amount = transaction.amount
         if amount.strip():
             new_amount = validate_non_negative_amount(amount, "Transaction amount")
-
 
         # Description
         new_description = description.strip()

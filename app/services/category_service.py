@@ -1,4 +1,4 @@
-# category_service.py
+# app/services/category_service.py
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -68,7 +68,7 @@ class CategoryService:
         Returns:
             Category | None: Category if found, else None.
         """
-        
+
         return (
             self.db_session.query(Category)
             .filter_by(name=category_name, type=transaction_type)

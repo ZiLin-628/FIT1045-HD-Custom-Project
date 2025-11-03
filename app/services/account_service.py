@@ -1,4 +1,4 @@
-# account_service.py
+# app/services/account_service.py
 
 from sqlalchemy.orm import Session
 

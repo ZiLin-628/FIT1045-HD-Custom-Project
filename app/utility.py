@@ -1,4 +1,4 @@
-# utility.py
+# app/utility.py
 
 from datetime import datetime
 from decimal import ROUND_HALF_UP, Decimal
@@ -133,7 +133,7 @@ def create_backup() -> None:
     """
     Create a backup of the database file
     """
-    
+
     # Database file location
     db_path = Path("data/money_tracker.db")
 

@@ -1,4 +1,4 @@
-# filter_service.py
+# app/services/filter_service.py
 
 
 from sqlalchemy.orm import Session
@@ -22,7 +22,7 @@ class FilterService:
             account_service: Service for managing accounts.
             category_service: Service for managing categories.
         """
-        
+
         self.db_session = db_session
         self.account_service = account_service
         self.category_service = category_service
